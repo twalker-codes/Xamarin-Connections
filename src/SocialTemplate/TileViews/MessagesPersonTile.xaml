@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.TileViews.MessagesPersonTile"
+             xmlns:model="clr-namespace:SocialTemplate.Models"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:converter="clr-namespace:SocialTemplate.Converters"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             xmlns:res="clr-namespace:SocialTemplate.Resources"
+             x:DataType="model:Person">
+
+    <ContentView.Resources>
+        <converter:LongDateTimeConverter x:Key="LongDateTimeConverter"/>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, 16"
+          ColumnDefinitions="48,*"
+          ColumnSpacing="16"
+          RowSpacing="4">
+
+        <pan:PancakeView CornerRadius="24"
+                         VerticalOptions="Start"
+                         Grid.RowSpan="2">
+
+            <Image Source="{Binding Photo}"
+                    WidthRequest="48"
+                    HeightRequest="48"
+                    Aspect="Fill"/>
+
+        </pan:PancakeView>
+
+        <StackLayout Orientation="Horizontal"
+                     Grid.Column="1">
+
+            <Label Text="{Binding FullName}" 
+                   VerticalOptions="Center"
+                Style="{StaticResource BoldSmallPrimaryLabelStyle}"/>
+
+            <Image VerticalOptions="Center"
+                   IsVisible="{Binding Ticked}">
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.Verified}"
+                                     FontFamily="Material"
+                                     Size="Medium"
+                                     Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                        Dark={StaticResource PrimaryColorDark}}"/>
+                </Image.Source>
+            </Image>
+
+        </StackLayout>
+
+
+        <Label Text="{Binding RecentContact, 
+                        Converter={StaticResource LongDateTimeConverter}}" 
+            Style="{StaticResource SmallSecondaryLabelStyle}"
+            Grid.Column="1"
+            Grid.Row="1"/>
+
+        <ContentView HeightRequest="1"
+                     VerticalOptions="Center"
+                     BackgroundColor="{StaticResource InputViewBorderColor}"
+                     Grid.Row="2"
+                     Grid.ColumnSpan="2"/>
+
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource
+                                    AncestorType={x:Type vmodel:MessagesViewModel}},
+                                    Path=TapCommand}"
+                                CommandParameter="{Binding .}"/>
+        </Grid.GestureRecognizers>
+
+    </Grid>
+    
+</ContentView>

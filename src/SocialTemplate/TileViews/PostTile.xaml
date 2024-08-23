@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.TileViews.PostTile"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             xmlns:converter="clr-namespace:SocialTemplate.Converters"
+             x:DataType="vmodel:PostTileViewModel">
+
+    <ContentView.Resources>
+        <converter:RelativeTimeConverter x:Key="RelativeTimeConverter"/>
+        <converter:FavoriteIconConverter x:Key="FavoriteIconConverter"/>
+    </ContentView.Resources>
+
+    <StackLayout Spacing="16">
+
+        <Grid ColumnDefinitions="48,*,Auto"
+              RowDefinitions="24,24"
+              RowSpacing="0"
+              ColumnSpacing="16">
+
+            <pan:PancakeView CornerRadius="24"
+                             Grid.RowSpan="2">
+                <Image Source="{Binding AuthorPhoto}"
+                       Aspect="AspectFill"/>
+            </pan:PancakeView>
+
+            <StackLayout Orientation="Horizontal"
+                         Grid.Column="1">
+
+                <Label Text="{Binding AuthorName}"
+                   Style="{StaticResource BoldSmallPrimaryLabelStyle}"
+                   VerticalOptions="Center"
+                   Grid.Column="1"/>
+
+                <Image VerticalOptions="Center"
+                   IsVisible="{Binding AuthorTicked}"
+                   HorizontalOptions="Start"
+                   Grid.Column="2">
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static md:Icons.Verified}"
+                                     FontFamily="Material"
+                                     Size="Medium"
+                                     Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                        Dark={StaticResource PrimaryColorDark}}"/>
+                    </Image.Source>
+                </Image>
+        
+            </StackLayout>
+
+            <Label Text="{Binding AuthorUsername}"
+                   Style="{StaticResource SmallSecondaryLabelStyle}"
+                   Grid.Column="1"
+                   Grid.Row="1"/>
+
+            <Label Text="{Binding DateUtc, Converter={StaticResource RelativeTimeConverter}}" 
+                   Style="{StaticResource SmallSecondaryLabelStyle}"
+                   VerticalOptions="Center"
+                   Grid.Column="2"/>
+        </Grid>
+    
+        <Label Text="{Binding Text}"
+               MaxLines="2"
+               LineBreakMode="TailTruncation"
+               Style="{StaticResource SmallPrimaryLabelStyle}"/>
+
+        <RelativeLayout>
+
+            <pan:PancakeView CornerRadius="16"
+                                RelativeLayout.WidthConstraint="{ConstraintExpression 
+                                    Type=RelativeToParent, Property=Width, Factor=1.0}"
+                                RelativeLayout.HeightConstraint="{ConstraintExpression 
+                                    Type=RelativeToParent, Property=Width, Factor=0.625}">
+
+
+                <Image Source="{Binding Image}"
+                   Aspect="AspectFill"/>
+                
+            </pan:PancakeView>
+
+        </RelativeLayout>
+
+        <StackLayout Orientation="Horizontal">
+
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="{Binding IsFavorite, 
+                                        Converter={StaticResource FavoriteIconConverter}}"
+                                     FontFamily="Material"
+                                     Size="32"
+                                     Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                        Dark={StaticResource PrimaryColorDark}}"/>
+                </Image.Source>
+
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                          Command="{Binding FavoriteCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Label Text="{Binding FavoriteCount}"
+                   VerticalOptions="Center"
+                   Style="{StaticResource MediumSecondaryLabelStyle}"/>
+
+            <ContentView WidthRequest="16"/>
+
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.Comment}"
+                                     FontFamily="Material"
+                                     Size="32"
+                                     Color="{AppThemeBinding Light={StaticResource SecondaryTextColorLight},
+                                        Dark={StaticResource SecondaryTextColorDark}}"/>
+                </Image.Source>
+            </Image>
+
+            <Label Text="{Binding CommentCount }"
+                   VerticalOptions="Center"
+                   Style="{StaticResource MediumSecondaryLabelStyle}"/>
+
+            <ContentView HorizontalOptions="FillAndExpand"/>
+
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.Share}"
+                                     FontFamily="Material"
+                                     Size="32"
+                                     Color="{AppThemeBinding Light={StaticResource SecondaryTextColorLight},
+                                        Dark={StaticResource SecondaryTextColorDark}}"/>
+                </Image.Source>
+                
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                          Command="{Binding ShareCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+
+
+        </StackLayout>
+        
+        <ContentView BackgroundColor="{StaticResource InputViewBorderColor}"
+                     HeightRequest="1"/>
+
+        <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                  Command="{Binding TapCommand}"/>
+        </StackLayout.GestureRecognizers>
+        
+    </StackLayout>
+   
+</ContentView>

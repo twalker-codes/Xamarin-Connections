@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.TileViews.NotifyTile"
+             xmlns:model="clr-namespace:SocialTemplate.Models"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:converter="clr-namespace:SocialTemplate.Converters"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             x:DataType="model:Notify">
+
+    <ContentView.Resources>
+        <converter:RelativeTimeConverter x:Key="RelativeTimeConverter"/>
+        <converter:NotifyIconConverter x:Key="NotifyIconConverter"/>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="Auto, Auto, Auto, 16"
+          ColumnDefinitions="48,*,Auto"
+          ColumnSpacing="16"
+          RowSpacing="4">
+
+        <pan:PancakeView CornerRadius="24"
+                         VerticalOptions="Start"
+                         Grid.RowSpan="2">
+
+            <Image Source="{Binding PersonPhoto}"
+                         WidthRequest="48"
+                         HeightRequest="48"
+                         Aspect="Fill"/>
+
+        </pan:PancakeView>
+
+        <StackLayout Orientation="Horizontal"
+                     Grid.Column="1">
+
+            <Label Text="{Binding PersonName}" 
+                   VerticalOptions="Center"
+                Style="{StaticResource BoldSmallPrimaryLabelStyle}"/>
+
+            <Image VerticalOptions="Center"
+                   IsVisible="{Binding PersonTicked}">
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.Verified}"
+                                     FontFamily="Material"
+                                     Size="Medium"
+                                     Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                        Dark={StaticResource PrimaryColorDark}}"/>
+                </Image.Source>
+            </Image>
+            
+        </StackLayout>
+
+        <Label Text="{Binding DateUtc, Converter={StaticResource RelativeTimeConverter}}" 
+            Style="{StaticResource SmallSecondaryLabelStyle}"
+            Grid.Column="2"/>
+
+        <StackLayout Orientation="Horizontal"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2">
+
+            <Label Text="{Binding Text}" 
+                   HorizontalOptions="FillAndExpand"
+                Style="{StaticResource SmallSecondaryLabelStyle}"/>
+
+            <Image IsVisible="{Binding HasIcon}">
+                <Image.Source>
+                    <FontImageSource Glyph="{Binding NotifyIcon, Converter={StaticResource NotifyIconConverter}}"
+                                     FontFamily="Material"
+                                     Size="30"
+                                     Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                        Dark={StaticResource PrimaryColorDark}}"/>
+                </Image.Source>
+            </Image>
+
+        </StackLayout>
+        
+
+        <StackLayout Orientation="Horizontal"
+                     Spacing="24"
+                     IsVisible="{Binding IsQuestion}"
+                   Grid.Column="1"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="2">
+
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.CheckCircleOutline}"
+                                     FontFamily="Material"
+                                     Size="36"
+                                     Color="Green"/>
+                </Image.Source>
+            </Image>
+
+            <Image>
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.HighlightOff}"
+                                     FontFamily="Material"
+                                     Size="36"
+                                     Color="Gray"/>
+                </Image.Source>
+            </Image>
+
+        </StackLayout>
+        
+        <ContentView HeightRequest="1"
+                     VerticalOptions="Center"
+                     BackgroundColor="{StaticResource InputViewBorderColor}"
+                     Grid.Row="3"
+                     Grid.ColumnSpan="3"/>
+
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource
+                                    AncestorType={x:Type vmodel:NotifiesViewModel}},
+                                    Path=TapCommand}"
+                                CommandParameter="{Binding .}"/>
+        </Grid.GestureRecognizers>
+
+    </Grid>
+    
+</ContentView>

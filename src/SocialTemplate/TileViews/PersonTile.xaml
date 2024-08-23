@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.TileViews.PersonTile"
+             xmlns:model="clr-namespace:SocialTemplate.Models"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             xmlns:converter="clr-namespace:SocialTemplate.Converters"
+             xmlns:res="clr-namespace:SocialTemplate.Resources"
+             x:DataType="model:Person">
+
+    <ContentView.Resources>
+        <converter:RelativeTimeConverter x:Key="RelativeTimeConverter"/>
+        <converter:ShortDateTimeConverter x:Key="ShortDateTimeConverter"/>
+    </ContentView.Resources>
+
+    <StackLayout>
+
+        <StackLayout Orientation="Horizontal"
+                 Spacing="16">
+
+            <pan:PancakeView CornerRadius="24"
+                         VerticalOptions="Start">
+
+                <Image Source="{Binding Photo}"
+                         WidthRequest="48"
+                         HeightRequest="48"
+                         Aspect="Fill"/>
+
+            </pan:PancakeView>
+
+            <StackLayout Spacing="0">
+
+                <StackLayout Orientation="Horizontal">
+
+                    <Label Text="{Binding FullName}"
+                           VerticalOptions="Center"
+                       Style="{StaticResource BoldSmallPrimaryLabelStyle}"/>
+
+                    <Image VerticalOptions="Center"
+                       IsVisible="{Binding Ticked}">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static md:Icons.Verified}"
+                                         FontFamily="Material"
+                                         Size="Medium"
+                                         Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                            Dark={StaticResource PrimaryColorDark}}"/>
+                        </Image.Source>
+                    </Image>
+
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{x:Static res:AppResources.Joined}"
+                       Style="{StaticResource SmallSecondaryLabelStyle}"/>
+
+                    <Label Text="{Binding MemberDate, Converter={StaticResource RelativeTimeConverter}}" 
+                   Style="{StaticResource SmallSecondaryLabelStyle}"/>
+
+                </StackLayout>
+
+                <Label Text="{Binding RecentContact, 
+                            Converter={StaticResource ShortDateTimeConverter}, 
+                            ConverterParameter={x:Static res:AppResources.RecentContact}}"
+                   Style="{StaticResource SmallSecondaryLabelStyle}"/>
+
+            </StackLayout>
+
+            <ContentView HeightRequest="1"
+                     BackgroundColor="{StaticResource InputViewBorderColor}"/>
+
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource
+                                    AncestorType={x:Type vmodel:PersonsViewModel}},
+                                    Path=TapCommand}"
+                                CommandParameter="{Binding .}"/>
+            </StackLayout.GestureRecognizers>
+
+        </StackLayout>
+        
+        <ContentView BackgroundColor="{StaticResource InputViewBorderColor}"
+                     HeightRequest="1"
+                     Margin="0,8"/>
+
+    </StackLayout>
+    
+</ContentView>

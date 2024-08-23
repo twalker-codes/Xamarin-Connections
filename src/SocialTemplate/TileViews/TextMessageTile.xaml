@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.TileViews.TextMessageTile"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             x:DataType="vmodel:MessageViewModel">
+
+    <StackLayout Orientation="Horizontal">
+
+        <ContentView WidthRequest="64"
+                     IsVisible="{Binding IsSent}"/>
+
+        <pan:PancakeView CornerRadius="16"
+                    Padding="16"     
+                    BackgroundColor="{Binding BgColor}"
+                    HorizontalOptions="FillAndExpand">
+
+            <Label Text="{Binding Text}"
+                   TextColor="{Binding TextColor}"
+                Style="{StaticResource SmallLabelStyle}"/>
+
+        </pan:PancakeView>
+
+        <ContentView WidthRequest="64"
+                     IsVisible="{Binding IsReceived}"/>
+
+    </StackLayout>
+
+</ContentView>

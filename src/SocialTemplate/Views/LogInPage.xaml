@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.Views.LogInPage"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:res="clr-namespace:SocialTemplate.Resources"
+             xmlns:template="clr-namespace:SocialTemplate.ControlTemplates"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                Dark={StaticResource BackgroundColorDark}}">
+
+    <ContentPage.BindingContext>
+        <vmodel:LogInViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+
+        <StackLayout Padding="32" Spacing="16">
+
+            <ContentView/>
+
+            <Label Text="{x:Static res:AppResources.WelcomeLogIn}"
+                   Style="{StaticResource TitlePrimaryLabelStyle}"
+                   HorizontalTextAlignment="Center"/>
+
+            <ContentView/>
+
+            <template:ChicEntry
+                Placeholder="{x:Static res:AppResources.Username}"
+                Text="{Binding Username, Mode=TwoWay}"
+                HorizontalOptions="FillAndExpand"
+                ControlTemplate="{StaticResource ChicEntryControlTemplate}"/>
+
+            <ContentView/>
+
+            <template:ChicEntry
+                Placeholder="{x:Static res:AppResources.Password}"
+                Text="{Binding Password, Mode=TwoWay}"
+                HorizontalOptions="FillAndExpand"
+                ControlTemplate="{StaticResource ChicEntryControlTemplate}"/>
+
+            <ContentView/>
+
+            <StackLayout Orientation="Horizontal" Spacing="0">
+
+                <Label Text="{x:Static res:AppResources.RememberMe}"
+                        Style="{StaticResource SmallTertiaryLabelStyle}"
+                        VerticalOptions="Center">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                Command="{Binding RememberCommand}" />
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+                <CheckBox Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                            Dark={StaticResource PrimaryColorDark}}"
+                            VerticalOptions="Center"
+                            IsChecked="{Binding RememberMe}" />
+
+                <Label Text="{x:Static res:AppResources.ForgotPassword}"
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                            Dark={StaticResource PrimaryColorDark}}"
+                       TextDecorations="Underline"
+                       FontSize="Medium"
+                       HorizontalTextAlignment="End"
+                       VerticalOptions="Center"
+                       HorizontalOptions="FillAndExpand">
+
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                Command="{Binding ForgotCommand}" />
+                    </Label.GestureRecognizers>
+
+                </Label>
+
+            </StackLayout>
+
+            <ContentView/>
+
+            <Button Style="{StaticResource PrimaryButtonStyle}"
+                    Text="{x:Static res:AppResources.LogIn}"
+                    Command="{Binding LogInCommand}"/>
+
+            <ContentView HeightRequest="1"
+                         BackgroundColor="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                            Dark={StaticResource PrimaryColorDark}}"
+                         Margin="8,5,8,5"/>
+
+            <Button Style="{StaticResource SecondaryButtonStyle}"
+                    Text="{x:Static res:AppResources.LogInWithGoogle}"
+                    Command="{Binding LogInCommand}" />
+
+            <Button Style="{StaticResource SecondaryButtonStyle}"
+                    Text="{x:Static res:AppResources.LogInWithFacebook}"
+                    Command="{Binding LogInCommand}" />
+
+            <Label Style="{StaticResource MediumSecondaryLabelStyle}"
+                    HorizontalTextAlignment="Center"
+                    VerticalTextAlignment="Center"
+                    HeightRequest="40">
+
+                <Label.FormattedText>
+                    <FormattedString>
+
+                        <Span Text="{x:Static res:AppResources.DontHaveAccount}" />
+
+                        <Span Text="{x:Static res:AppResources.SignUp}"
+                              TextColor="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                    Dark={StaticResource PrimaryColorDark}}"
+                              TextDecorations="Underline"/>
+
+                    </FormattedString>
+                </Label.FormattedText>
+
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                          Command="{Binding SignUpCommand}" />
+                </Label.GestureRecognizers>
+
+            </Label>
+
+        </StackLayout>
+
+    </ScrollView>
+
+</ContentPage>

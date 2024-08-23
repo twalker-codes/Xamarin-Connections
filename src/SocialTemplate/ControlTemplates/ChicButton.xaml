@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             xmlns:res="clr-namespace:SocialTemplate.Resources"
+             x:Class="SocialTemplate.ControlTemplates.ChicButton">
+
+    <ContentView.Resources>
+
+        <ControlTemplate x:Key="ChicButtonControlTemplate">
+
+                <pv:PancakeView BackgroundColor="{AppThemeBinding Light={StaticResource CardColorLight},
+                                    Dark={StaticResource CardColorDark}}"
+                                CornerRadius="16"
+                                Padding="10"
+                                BindingContext="{Binding Source={RelativeSource TemplatedParent}}">
+
+                    <Grid ColumnDefinitions="Auto, *, Auto"
+                            VerticalOptions="Center"
+                            RowSpacing="20"
+                            ColumnSpacing="20">
+
+                        <Label Text="{Binding Icon}"
+                               FontFamily="Material"
+                               VerticalOptions="Center"
+                               FontSize="30"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                    Dark={StaticResource PrimaryColorDark}}"/>
+
+                        <Label Grid.Column="1"
+                               Text="{Binding Text}"
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight},
+                                    Dark={StaticResource SecondaryTextColorDark}}"
+                               VerticalOptions="Center"
+                               FontSize="Medium"/>
+
+                        <Label Text="{Static md:Icons.ChevronRight}"
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight},
+                                    Dark={StaticResource SecondaryTextColorDark}}"
+                               FontFamily="Material"
+                               VerticalOptions="Center"
+                               FontSize="30"
+                               Grid.Column="2"/>
+
+
+                </Grid>
+
+                <pv:PancakeView.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                            Command="{Binding FetchCommand}" />
+                </pv:PancakeView.GestureRecognizers>
+
+            </pv:PancakeView>
+
+        </ControlTemplate>
+        
+    </ContentView.Resources>
+
+</ContentView>

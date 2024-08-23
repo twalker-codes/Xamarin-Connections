@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.Views.PersonDetailPage"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:res="clr-namespace:SocialTemplate.Resources"
+             xmlns:converter="clr-namespace:SocialTemplate.Converters"
+             xmlns:tile="clr-namespace:SocialTemplate.TileViews"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                Dark={StaticResource BackgroundColorDark}}"
+             x:DataType="vmodel:PersonDetailViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <vmodel:PersonDetailViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <converter:RelativeTimeConverter x:Key="RelativeTimeConverter"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+
+        <StackLayout Spacing="0">
+
+            <RelativeLayout HeightRequest="270"
+                VerticalOptions="Start">
+
+                <Image Source="{Binding Cover}"
+                       Aspect="AspectFill"
+                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+                       RelativeLayout.HeightConstraint="180"
+                       RelativeLayout.XConstraint="0"
+                       RelativeLayout.YConstraint="0"/>
+
+                <pan:PancakeView 
+                    CornerRadius="90"
+                    RelativeLayout.WidthConstraint="180"
+                    RelativeLayout.HeightConstraint="180"
+                    RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.5, Constant=-90}"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=1.0, Constant=-180}">
+
+                    <pan:PancakeView.Border>
+                        <pan:Border Color="{AppThemeBinding Light={StaticResource CardColorLight},
+                                        Dark={StaticResource CardColorDark}}"
+                                Thickness="{OnPlatform iOS=5, Android=10}" />
+                    </pan:PancakeView.Border>
+
+                    <pan:PancakeView.Shadow>
+                        <pan:DropShadow />
+                    </pan:PancakeView.Shadow>
+
+                    <Image Source="{Binding Photo}"
+                       Aspect="AspectFill"/>
+
+                </pan:PancakeView>
+
+                <StackLayout Orientation="Horizontal"
+                    Margin="16"
+                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1.0}"
+                    RelativeLayout.XConstraint="0"
+                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height,Factor=1.0, Constant=-60}">
+
+
+                    <Button Text="{x:Static res:AppResources.Message}"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Padding="4"
+                            Command="{Binding MessageCommand}"/>
+
+                    <ContentView HorizontalOptions="FillAndExpand"/>
+
+                    <Button Text="{Binding FollowButtonCaption}"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Padding="4"
+                            Grid.Column="2"
+                            Command="{Binding FollowCommand}"/>
+
+                </StackLayout>
+
+            </RelativeLayout>
+
+            <StackLayout Padding="32"
+                         Spacing="0">
+
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center">
+
+                    <Label Text="{Binding Name}"            
+                       HorizontalTextAlignment="Center"
+                       Style="{StaticResource BoldTitlePrimaryLabelStyle}"/>
+
+                    <Image VerticalOptions="Center"
+                       IsVisible="{Binding Ticked}">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static md:Icons.Verified}"
+                                         FontFamily="Material"
+                                         Size="Medium"
+                                         Color="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                            Dark={StaticResource PrimaryColorDark}}"/>
+                        </Image.Source>
+                    </Image>
+
+                </StackLayout>
+    
+                <Label Text="{Binding Username}"
+                   Style="{StaticResource MediumSecondaryLabelStyle}"
+                   HorizontalTextAlignment="Center"/>
+
+                <Label Style="{StaticResource MediumSecondaryLabelStyle}"
+                   HorizontalTextAlignment="Center">
+
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{x:Static res:AppResources.Joined}"/>
+                            <Span Text="{Binding MemberDate, 
+                                        Converter={StaticResource RelativeTimeConverter},
+                                        StringFormat=' {0}'}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+
+                </Label>
+
+                <ContentView HeightRequest="32"/>
+
+                <Grid ColumnDefinitions="*,*,*"
+                  RowDefinitions="Auto,Auto"
+                  ColumnSpacing="4">
+
+                    <Label Text="{x:Static res:AppResources.Followers}" 
+                       Style="{StaticResource MediumPrimaryLabelStyle}"
+                       HorizontalTextAlignment="Center"/>
+
+                    <Label Text="{x:Static res:AppResources.Following}" 
+                       Style="{StaticResource MediumPrimaryLabelStyle}"
+                       HorizontalTextAlignment="Center"
+                       Grid.Column="1"/>
+
+                    <Label Text="{x:Static res:AppResources.Posts}" 
+                       Style="{StaticResource MediumPrimaryLabelStyle}"
+                       HorizontalOptions="Center"
+                       Grid.Column="2"/>
+
+                    <Label Text="{Binding FollowersCount}"
+                       Style="{StaticResource TitlePrimaryLabelStyle}"
+                       HorizontalTextAlignment="Center"
+                       Grid.Row="1"/>
+
+                    <Label Text="{Binding FollowingCount}"
+                       Style="{StaticResource TitlePrimaryLabelStyle}"
+                       HorizontalTextAlignment="Center"
+                       Grid.Column="1"
+                       Grid.Row="1"/>
+
+                    <Label Text="{Binding PostCount}"
+                       Style="{StaticResource TitlePrimaryLabelStyle}"
+                       HorizontalTextAlignment="Center"
+                       Grid.Column="2"
+                       Grid.Row="1"/>
+
+                </Grid>
+
+            </StackLayout>
+
+            <ContentView BackgroundColor="{StaticResource InputViewBorderColor}"
+                             HeightRequest="1"
+                         Margin="16,0"/>
+
+            <StackLayout BindableLayout.ItemsSource="{Binding Posts}"
+                         Spacing="16"
+                         Margin="24">
+
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <tile:PostTile/>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+
+            </StackLayout>
+
+        </StackLayout>
+
+    </ScrollView>
+
+</ContentPage>

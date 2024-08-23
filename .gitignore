@@ -1,0 +1,8 @@
+src/.idea
+src/.vs
+src/SocialTemplate/bin
+src/SocialTemplate/obj
+*.user
+src/SocialTemplate.Android/obj
+src/SocialTemplate.iOS/bin
+src/SocialTemplate.iOS/obj

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SocialTemplate.Views.MessagingPage"
+             xmlns:pan="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:res="clr-namespace:SocialTemplate.Resources"
+             xmlns:md="clr-namespace:SocialTemplate.MaterialDesign"
+             xmlns:vmodel="clr-namespace:SocialTemplate.ViewModels"
+             xmlns:template="clr-namespace:SocialTemplate.ControlTemplates"
+             xmlns:tile="clr-namespace:SocialTemplate.TileViews"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight},
+                   Dark={StaticResource BackgroundColorDark}}">
+
+    <ContentPage.BindingContext>
+        <vmodel:MessagingViewModel/>
+    </ContentPage.BindingContext>
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="40,*"
+              RowDefinitions="*,40,*"
+              RowSpacing="0"
+              ColumnSpacing="16"
+              VerticalOptions="Center">
+
+            <pan:PancakeView CornerRadius="20"
+                             Grid.Row="1">
+                <Image Source="{Binding Photo}"
+                       Aspect="AspectFill"/>
+            </pan:PancakeView>
+
+            <Label Text="{Binding Name}"
+                   Style="{StaticResource BoldMediumPrimaryLabelStyle}"
+                   VerticalOptions="Center"
+                   Grid.Column="1"
+                   Grid.Row="1"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <Grid RowDefinitions="*, Auto"
+          RowSpacing="16"
+          Padding="16">
+
+        <CollectionView ItemsSource="{Binding Messages}"
+                    Margin="16">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                ItemSpacing="16"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <tile:TextMessageTile/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <StackLayout Orientation="Horizontal"
+                     Spacing="16"
+                     Grid.Row="1">
+
+            <template:ChicEntry
+                Placeholder="{x:Static res:AppResources.TypeYourMessage}"
+                Text="{Binding Text, Mode=TwoWay}"
+                HorizontalOptions="FillAndExpand"
+                ControlTemplate="{StaticResource ChicEntryControlTemplate}"/>
+
+            <ImageButton BackgroundColor="Transparent"
+                         Command="{Binding SubmitCommand}">
+                <ImageButton.Source>
+                    <FontImageSource Glyph="{x:Static md:Icons.Send}"
+                                     FontFamily="Material"
+                                     Color="{AppThemeBinding Light={StaticResource SecondaryTextColorLight},
+                                        Dark={StaticResource SecondaryTextColorDark}}"/>
+                </ImageButton.Source>
+            </ImageButton>
+
+        </StackLayout>
+
+    </Grid>
+    
+</ContentPage>
